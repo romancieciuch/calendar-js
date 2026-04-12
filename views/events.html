@@ -1,0 +1,22 @@
+<div class="page-width">
+	<h1 class="page-title acenter">Twoje wydarzenia</h1>
+</div>
+
+<div class="page-width page-width__midi">
+	<form class="form form__search">
+		<div class="form-row form-row__search">
+			<svg class="form-search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20.004" viewBox="0 0 20 20.004"><path d="M80.251,72.125a8.105,8.105,0,0,1-1.563,4.793l4.946,4.949a1.251,1.251,0,0,1-1.77,1.77l-4.946-4.949a8.127,8.127,0,1,1,3.332-6.563Zm-8.125,5.625A5.625,5.625,0,1,0,66.5,72.125,5.627,5.627,0,0,0,72.125,77.751Z" transform="translate(-64 -64)" fill="#ddd"/></svg>
+			<input data-search class="form-field" type="search" name="q" id="q">
+		</div>
+	</form>
+
+	<div class="buttons">
+		<button data-select-all class="button button__mini">Zaznacz wszystkie</button>
+		<button data-deselect-all class="button button__mini button__black">Odznacz wszystkie</button>
+		<button data-export-selected class="button button__mini button__accent">Eksportuj zaznaczone</button>
+		<button data-delete-selected class="button button__mini button__error">Usuń zaznaczone</button>
+	</div>
+
+	<div data-events-list class="events-list"></div>
+	<div data-events-list-sentinel class="sentinel"></div>
+</div>

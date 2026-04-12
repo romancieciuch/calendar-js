@@ -1,0 +1,55 @@
+<div class="page-width">
+	<h1 class="page-title acenter">
+		Edycja wydarzenia: <span data-title class="primary">Projekt JS</span>
+	</h1>
+</div>
+
+<div class="page-width page-width__narrow">
+	<div class="page">
+		<form class="form" action="" method="post">
+			<div class="form-row">
+				<label class="form-label" for="title">Nazwa wydarzenia</label>
+				<input class="form-field" type="text" id="title" name="title">
+			</div>
+
+			<div class="form-row">
+				<label class="form-label" for="desc">Opis wydarzenia</label>
+				<textarea class="form-field" id="desc" name="desc" rows="6"></textarea>
+			</div>
+
+			<div class="form-row">
+				<label class="form-label" for="start">Początek wydarzenia</label>
+				<input class="form-field" type="datetime-local" id="start" name="start">
+			</div>
+
+			<div class="form-row">
+				<label class="form-label" for="end">Koniec wydarzenia</label>
+				<input class="form-field" type="datetime-local" id="end" name="end">
+			</div>
+
+			<div class="event-checkbox checkbox">
+				<input type="checkbox" id="all_day" name="all_day" value="1">
+				<span class="checkbox-box"></span>
+				<label for="all_day" class="checkbox-label">Cały dzień</label>
+			</div>
+
+			<div class="form-row">
+				<label class="form-label" for="category">Kategoria</label>
+				<select class="form-field" id="category" name="category">
+					<option value="">Bez kategorii</option>
+				</select>
+			</div>
+
+			<div class="form-row acenter">
+				<button class="button" type="submit">Zapisz zmiany</button>
+			</div>
+
+			<div class="error"></div>
+			<div class="good"></div>
+		</form>
+	</div>
+</div>
+
+<div class="page-width acenter">
+	<a class="go-back" href="#home">Powrót</a>
+</div>
