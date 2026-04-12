@@ -74,6 +74,10 @@ a:focus {
 	color: var(--primary-hover);
 }
 
+b, strong {
+	font-weight: 700;
+}
+
 .primary {
 	color: var(--primary);
 }
