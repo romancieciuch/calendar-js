@@ -22,7 +22,7 @@ window.view = (params) => {
 	for (let el of day.timed) {
 		html += `
 			<a class="day-event" href="#event/${el.id}"
-				style="top: calc((${el.start_hour} - 6) * var(--hour-height));
+				style="top: calc(((${el.start_hour} + ${el.start_minutes / 60}) - 6) * var(--hour-height));
 				left: calc((${n}) * var(--event-width));
 				width: calc(var(--event-width));
 				height: calc(${el.duration_hours} * var(--hour-height));

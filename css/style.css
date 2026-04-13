@@ -679,15 +679,23 @@ header .button {
 .day-calendar-container {
 	width: 100%;
 	overflow: auto;
+	position: relative;
+	background-color: #fff;
+	background-image: repeating-linear-gradient(
+		to bottom,
+		transparent,
+		transparent calc(var(--hour-height) - 1px),
+		var(--border-color) calc(var(--hour-height) - 1px),
+		var(--border-color) var(--hour-height)
+	);
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
 }
 
 .day-calendar {
 	position: relative;
 	display: grid;
 	grid-template-columns: 80px 1fr;
-
-	background: #fff;
-	border: 1px solid var(--border-color);
 	border-radius: var(--border-radius);
 	min-width: 645px;
 }
@@ -712,23 +720,6 @@ header .button {
 /* prawa strona (overlay siatki) */
 .day-events {
 	position: relative;
-}
-
-/* linie siatki */
-.day-events::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-
-	background-image: repeating-linear-gradient(
-		to bottom,
-		transparent,
-		transparent calc(var(--hour-height) - 1px),
-		var(--border-color) calc(var(--hour-height) - 1px),
-		var(--border-color) var(--hour-height)
-	);
-
-	z-index: 0;
 }
 
 /* event */

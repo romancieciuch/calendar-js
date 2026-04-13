@@ -492,6 +492,7 @@ export class Calendar {
 				timed.push({
 					...e,
 					start_hour: start.getHours(),
+					start_minutes: start.getMinutes(),
 					start: start.getHours() + ":" + String(start.getMinutes()).padStart(2, "0"),
 					end: end.getHours() + ":" + String(end.getMinutes()).padStart(2, "0"),
 					duration_hours: duration_hours,

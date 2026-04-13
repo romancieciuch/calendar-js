@@ -17,6 +17,7 @@ window.view = (params) => {
 	document.querySelector("[data-button-export]").dataset.id = event.id;
 	document.querySelector("[data-button-edit]").href = `#event-edit/${event.id}`;
 	document.querySelector("[data-button-delete]").href = `#event-delete/${event.id}`;
+	document.querySelector("[data-button-day]").href = `#day/${window.calendar.toYMD(event.start)}`;
 
 	document.querySelector("[data-button-export]").addEventListener("click", () => {
 		window.calendar.export_events_to_ics(event.id);
