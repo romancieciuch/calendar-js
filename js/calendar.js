@@ -399,7 +399,8 @@ export class Calendar {
 
 				all_day.push({
 					...e,
-					duration_days
+					duration_days: duration_days,
+					color: e.category_info.color ?? "#000000"
 				});
 
 			} else {

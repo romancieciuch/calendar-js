@@ -12,6 +12,7 @@
 	--border-color: #ddd;
 
 	--hour-height: 60px;
+	--event-width: 200px;
 
 	--black: #222;
 	--error: #cc0000;
@@ -670,12 +671,16 @@ header .button {
 	}
 }
 
-/* globalna wysokość godziny */
-:root {
-	--hour-height: 60px;
+.all-day-events {
+	margin: 0 auto 1.5rem;
 }
 
 /* wrapper */
+.day-calendar-container {
+	width: 100%;
+	overflow: auto;
+}
+
 .day-calendar {
 	position: relative;
 	display: grid;
@@ -684,12 +689,16 @@ header .button {
 	background: #fff;
 	border: 1px solid var(--border-color);
 	border-radius: var(--border-radius);
-	overflow: hidden;
+	min-width: 645px;
 }
 
 /* kolumna godzin */
 .day-hours {
 	border-right: 1px solid var(--border-color);
+	position: sticky;
+	left: 0;
+	background: #fff;
+	z-index: 2;
 }
 
 .day-hours div {
@@ -743,6 +752,11 @@ header .button {
 	text-decoration: none;
 }
 
+.day-event__all-day {
+	position: static;
+	display: block;
+}
+
 .day-event.accent {
 	background: var(--accent);
 }
@@ -754,13 +768,14 @@ header .button {
 }
 
 /* mobile */
-@media (max-width: 768px) {
+@media (max-width: 760px) {
 	.day-hours div {
 		height: 45px;
 	}
 
 	:root {
 		--hour-height: 45px;
+		--event-width: 150px;
 	}
 }
 
