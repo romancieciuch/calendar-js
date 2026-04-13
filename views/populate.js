@@ -19,6 +19,15 @@ const events = [
     category: "cat-work"
   },
   {
+    id: "evt-2a",
+    title: "Spłata kredytu",
+    desc: "",
+    start: "2026-04-14T00:00:00.000Z",
+    end: "2026-04-14T00:00:00.000Z",
+    all_day: true,
+    category: "cat-private"
+  },
+  {
     id: "evt-2",
     title: "Plan sprintu",
     desc: "",

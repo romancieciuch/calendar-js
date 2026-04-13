@@ -1,12 +1,15 @@
 <div class="page-width">
-	<h1 class="page-title acenter">6 kwietnia 2026</h1>
+	<h1 data-title class="page-title acenter">6 kwietnia 2026</h1>
 </div>
 
 <div class="page-width">
-	<div class="day-calendar">
 
-		<!-- godziny -->
+	// całodniowe
+
+	<div class="day-calendar">
 		<div class="day-hours">
+			<div>06:00</div>
+			<div>07:00</div>
 			<div>08:00</div>
 			<div>09:00</div>
 			<div>10:00</div>
@@ -17,19 +20,13 @@
 			<div>15:00</div>
 			<div>16:00</div>
 			<div>17:00</div>
+			<div>18:00</div>
+			<div>19:00</div>
+			<div>20:00</div>
+			<div>21:00</div>
+			<div>22:00</div>
 		</div>
 
-		<div class="day-events">
-			<a class="day-event" href="#event/12345678"
-				style="top: calc((10 - 8) * var(--hour-height)); height: calc(1 * var(--hour-height));">
-				10:00 Spotkanie z klientem
-			</a>
-
-			<a class="day-event accent" href="#event/12345678"
-				style="top: calc((12 - 8) * var(--hour-height)); height: calc(2 * var(--hour-height));">
-				12:00 Trening
-			</a>
-		</div>
-
+		<div data-events class="day-events"></div>
 	</div>
 </div>

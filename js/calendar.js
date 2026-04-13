@@ -55,6 +55,19 @@ export class Calendar {
 		return months[number];
 	}
 
+	polish_date (date) {
+		date = new Date(date);
+
+		if (isNaN(date)) return "";
+
+		return date.toLocaleDateString("pl-PL", {
+			weekday: "long",
+			day: "numeric",
+			month: "long",
+			year: "numeric"
+		});
+	}
+
 
 
 	// Wydarzenia
@@ -96,11 +109,18 @@ export class Calendar {
 		if (isNaN(start) || isNaN(end)) throw new Error("Wprowadź poprawne daty zakresu");
 
 		const arr = events
-			.map(e => ({
-				...e,
-				start: new Date(e.start),
-				end: new Date(e.end)
-			}))
+			.map(e => {
+				let category_info = null;
+				if (e.category)
+					category_info = this.get_category(e.category);
+
+				return {
+					...e,
+					start: new Date(e.start),
+					end: new Date(e.end),
+					category_info: category_info
+				};
+			})
 			.filter(e => {
 				return e.start <= end && e.end >= start;
 			})
@@ -125,13 +145,13 @@ export class Calendar {
 		if (!event) return null;
 
 		// Pobieramy informacje o kategorii
-		let category = null;
+		let category_info = null;
 		if (event.category)
-			category = this.get_category(event.category);
+			category_info = this.get_category(event.category);
 
     	return {
 			...event,
-			category_info: category
+			category_info: category_info
 		}
 	}
 
@@ -348,4 +368,68 @@ export class Calendar {
 		URL.revokeObjectURL(url);
 	}
 
+
+
+	// Widoki
+
+	get_day_view (date) {
+		date = new Date(date);
+
+		if (isNaN(date)) throw new Error("Niepoprawna data");
+
+		const start_of_day = new Date(date);
+		start_of_day.setHours(0, 0, 0, 0);
+
+		const end_of_day = new Date(date);
+		end_of_day.setHours(23, 59, 59, 999);
+
+		const events = this.get_events_by_range(start_of_day, end_of_day);
+
+		const all_day = [];
+		const timed = [];
+
+		events.forEach(e => {
+			if (e.all_day) {
+
+				const start = new Date(e.start);
+				const end = new Date(e.end);
+
+				const duration_days =
+					Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+
+				all_day.push({
+					...e,
+					duration_days
+				});
+
+			} else {
+
+				const start = new Date(e.start);
+				const end = new Date(e.end);
+
+				const effective_start = start < start_of_day ? start_of_day : start;
+				const effective_end = end > end_of_day ? end_of_day : end;
+
+				const duration_hours = (effective_end - effective_start) / (1000 * 60 * 60);
+
+				timed.push({
+					...e,
+					start_hour: start.getHours(),
+					start: start.getHours() + ":" + String(start.getMinutes()).padStart(2, "0"),
+					end: end.getHours() + ":" + String(end.getMinutes()).padStart(2, "0"),
+					duration_hours: duration_hours,
+					color: e.category_info.color ?? "#000000"
+				});
+			}
+		});
+
+		timed.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+		return {
+			date: date,
+			nice_date: this.polish_date(date),
+			all_day: all_day,
+			timed: timed
+		};
+	}
 }
