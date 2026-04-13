@@ -931,3 +931,23 @@ header .button {
 .sentinel {
 	height: 1px;
 }
+
+.title-with-navigation {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem 1.5rem;
+	margin: 1.5rem 0;
+}
+
+.title-with-navigation h1 {
+	margin: 0;
+}
+
+.title-with-navigation a {
+	display: block;
+}
+
+.title-with-navigation svg {
+	display: block;
+}

@@ -68,6 +68,82 @@ export class Calendar {
 		});
 	}
 
+	get_date_prev_next (date) {
+		date = new Date(date);
+
+		if (isNaN(date)) return null;
+
+		// klon daty, żeby nie ruszać oryginału, na podstawie liczby sekund
+		const clone = (d) => new Date(d.getTime());
+
+		// dzień
+		const prevDay = clone(date);
+		prevDay.setDate(prevDay.getDate() - 1);
+
+		const nextDay = clone(date);
+		nextDay.setDate(nextDay.getDate() + 1);
+
+		// miesiąc
+		const prevMonth = clone(date);
+		prevMonth.setMonth(prevMonth.getMonth() - 1);
+
+		const nextMonth = clone(date);
+		nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+		// rok
+		const prevYear = clone(date);
+		prevYear.setFullYear(prevYear.getFullYear() - 1);
+
+		const nextYear = clone(date);
+		nextYear.setFullYear(nextYear.getFullYear() + 1);
+
+		return {
+			current: date,
+
+			day: {
+				prev: this.toYMD(prevDay),
+				next: this.toYMD(nextDay)
+			},
+
+			month: {
+				prev: this.toYM(prevMonth),
+				next: this.toYM(nextMonth)
+			},
+
+			year: {
+				prev: this.toY(prevYear),
+				next: this.toY(nextYear)
+			}
+		};
+	}
+
+	toYMD (date) {
+		const d = new Date(date);
+		if (isNaN(d)) return "";
+
+		const y = d.getFullYear();
+		const m = String(d.getMonth() + 1).padStart(2, "0");
+		const day = String(d.getDate()).padStart(2, "0");
+
+		return `${y}-${m}-${day}`;
+	}
+
+	toYM (date) {
+		const d = new Date(date);
+		if (isNaN(d)) return "";
+
+		const y = d.getFullYear();
+		const m = String(d.getMonth() + 1).padStart(2, "0");
+
+		return `${y}-${m}`;
+	}
+
+	toY (date) {
+		const d = new Date(date);
+		if (isNaN(d)) return "";
+		return d.getFullYear();
+	}
+
 
 
 	// Wydarzenia

@@ -37,6 +37,15 @@ const events = [
     category: "cat-work"
   },
   {
+    id: "evt-2b",
+    title: "Odwiedziny Aneta",
+    desc: "",
+    start: "2026-04-14T10:30:00.000Z",
+    end: "2026-04-14T11:30:00.000Z",
+    all_day: false,
+    category: "cat-private"
+  },
+  {
     id: "evt-3",
     title: "Siłownia",
     desc: "Trening nóg",

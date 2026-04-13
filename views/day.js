@@ -9,6 +9,13 @@ window.view = (params) => {
 
 	console.log(day);
 
+
+	// Nawigacja
+	const navi = window.calendar.get_date_prev_next(date);
+	document.querySelector("[data-prev]").href = `#day/${navi.day.prev}`;
+	document.querySelector("[data-next]").href = `#day/${navi.day.next}`;
+
+
 	// Wydarzenia godzinowe
 	let html = ``;
 	let n = 0;
@@ -27,6 +34,7 @@ window.view = (params) => {
 	}
 
 	document.querySelector("[data-events]").innerHTML = html;
+
 
 	// Wydarzenia całodniowe
 	let html2 = ``;
