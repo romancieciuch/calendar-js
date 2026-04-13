@@ -522,7 +522,6 @@ export class Calendar {
 		};
 	}
 
-
 	get_month_view (date = new Date()) {
 		date = new Date(date);
 		if (isNaN(date)) date = new Date();
