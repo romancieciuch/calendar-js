@@ -70,8 +70,7 @@ a {
 	cursor: pointer;
 }
 
-a:hover,
-a:focus {
+a:hover {
 	color: var(--primary-hover);
 }
 
@@ -518,11 +517,11 @@ header .button {
 	min-height: 110px;
 	border-right: 1px solid var(--border-color);
 	border-bottom: 1px solid var(--border-color);
-	padding: 0.5rem;
+	padding: 0.25rem 0 0.5rem;
 
 	display: flex;
 	flex-direction: column;
-	gap: 0.25rem;
+	gap: 0.5rem;
 
 	position: relative;
 }
@@ -534,11 +533,10 @@ header .button {
 .day-number {
 	font-size: 12px;
 	font-weight: 700;
+	padding: 0 0.5rem;
 }
 
 .month-event {
-	background: var(--primary);
-	color: #fff;
 	font-size: 11px;
 	padding: 0.25rem 0.5rem;
 	border-radius: 4px;
@@ -551,8 +549,36 @@ header .button {
 	text-decoration: none;
 }
 
+.month-event__all_day {
+	background: var(--primary);
+	color: #fff;
+	margin: 0 0.5rem;
+}
+
+.month-event__multi_day {
+	border-radius: 0;
+	margin: 0;
+}
+
+.month-event__first_day {
+	border-radius: var(--border-radius) 0 0 var(--border-radius);
+	margin-left: 0.5rem;
+}
+
+.month-event__last_day {
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+	margin-right: 0.5rem;
+}
+
+.month-event__timed {
+	border-left: 4px solid var(--primary);
+	color: var(--text-color);
+	padding: 0 0 0 0.5rem;
+	margin: 0 0.5rem;
+}
+
 .month-event:hover {
-	background: var(--primary-hover);
+	background: var(--primary-hover) !important;
 	color: #fff;
 }
 
@@ -563,12 +589,23 @@ header .button {
 .day.today {
 	outline: 2px solid var(--primary);
 	outline-offset: -2px;
+	background: #e3ebfc;
+}
+
+.day.prev-month,
+.day.next-month {
+    opacity: 0.45;
+    color: var(--text-muted);
+}
+
+.day.prev-month .day-number,
+.day.next-month .day-number {
+	color: var(--text-muted-color);
 }
 
 @media (max-width: 768px) {
 	.day {
 		min-height: 80px;
-		padding: 0.35rem;
 	}
 }
 

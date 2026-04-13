@@ -68,10 +68,21 @@ export class Calendar {
 		});
 	}
 
-	get_date_prev_next (date) {
-		date = new Date(date);
+	polish_month_and_year (date) {
+		const d = new Date(date);
+		if (isNaN(d)) return "";
 
-		if (isNaN(date)) return null;
+		const str = d.toLocaleDateString("pl-PL", {
+			month: "long",
+			year: "numeric"
+		});
+
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	}
+
+	get_date_prev_next (date = new Date()) {
+		date = new Date(date);
+		if (isNaN(date)) date = new Date();
 
 		// klon daty, żeby nie ruszać oryginału, na podstawie liczby sekund
 		const clone = (d) => new Date(d.getTime());
@@ -510,4 +521,119 @@ export class Calendar {
 			timed: timed
 		};
 	}
+
+
+	get_month_view (date = new Date()) {
+		date = new Date(date);
+		if (isNaN(date)) date = new Date();
+
+		const year = date.getFullYear();
+		const month = date.getMonth();
+
+		const todayStr = this.toYMD(new Date());
+		const firstDay = new Date(year, month, 1);
+		const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+		let startWeekDay = firstDay.getDay();
+		if (startWeekDay === 0) startWeekDay = 7; // niedziela → 7
+
+		const days = [];
+
+		// DNI Z POPRZEDNIEGO MIESIĄCA
+		const prevMonthDays = startWeekDay - 1;
+
+		for (let i = prevMonthDays; i > 0; i--) {
+			const d = new Date(year, month, 1 - i);
+
+			days.push(buildDay(d, "prev"));
+		}
+
+		// DNI BIEŻĄCEGO MIESIĄCA
+		for (let i = 1; i <= daysInMonth; i++) {
+			const d = new Date(year, month, i);
+
+			days.push(buildDay(d, "current"));
+		}
+
+		// DNI Z NASTĘPNEGO MIESIĄCA (do pełnych 6 tygodni = 42 dni)
+		while (days.length < 42) {
+			const last = days[days.length - 1].date;
+			const d = new Date(last);
+			d.setDate(d.getDate() + 1);
+			days.push(buildDay(d, "next"));
+
+			// Przerwanie, żeby za dużo przyszłego miesiąca nie zasysało
+			if (d.getDay() === 0) break;
+		}
+
+		return {
+			nice_date: this.polish_month_and_year(date),
+			year,
+			month,
+			days
+		};
+
+
+		// helper
+		function buildDay (d, type) {
+
+			const start = new Date(d);
+			start.setHours(0, 0, 0, 0);
+
+			const end = new Date(d);
+			end.setHours(23, 59, 59, 999);
+
+			const events = window.calendar.get_events_by_range(start, end);
+
+			const all_day = [];
+			const timed = [];
+
+			events.forEach(e => {
+				const eventStart = new Date(e.start);
+				const eventEnd = new Date(e.end);
+				const current = new Date(d);
+
+				eventStart.setHours(0,0,0,0);
+				eventEnd.setHours(0,0,0,0);
+				current.setHours(0,0,0,0);
+
+				const is_multi_day = eventStart.getTime() !== eventEnd.getTime();
+				const is_first_day = current.getTime() === eventStart.getTime();
+				const is_middle_day = current > eventStart && current < eventEnd;
+				const is_last_day = current.getTime() === eventEnd.getTime();
+
+				if (e.all_day)
+					all_day.push({
+						...e,
+						is_multi_day: is_multi_day,
+						is_first_day: is_first_day,
+						is_middle_day: is_middle_day,
+						is_last_day: is_last_day,
+						color: e.category_info.color ?? "#000000"
+					});
+				else
+					timed.push({
+						...e,
+						is_multi_day: is_multi_day,
+						is_first_day: is_first_day,
+						is_middle_day: is_middle_day,
+						is_last_day: is_last_day,
+						color: e.category_info.color ?? "#000000",
+						start: e.start.getHours() + ":" + String(e.start.getMinutes()).padStart(2, "0")
+					});
+			});
+
+			return {
+				date: d,
+				ymd: window.calendar.toYMD(d),
+
+				is_today: window.calendar.toYMD(d) === todayStr,
+				type, // prev | current | next
+
+				all_day,
+				timed
+			};
+		}
+	}
+
 }
