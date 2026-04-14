@@ -68,6 +68,42 @@ export class Calendar {
 		});
 	}
 
+	polish_week (date) {
+		const d = new Date(date);
+		if (isNaN(d)) return "";
+
+		// znajdź poniedziałek
+		const day = d.getDay() || 7;
+		const monday = new Date(d);
+		monday.setDate(d.getDate() - day + 1);
+
+		// niedziela
+		const sunday = new Date(monday);
+		sunday.setDate(monday.getDate() + 6);
+
+		const sameMonth = monday.getMonth() === sunday.getMonth();
+
+		const dayStart = monday.getDate();
+		const dayEnd = sunday.getDate();
+
+		const monthStart = monday.toLocaleDateString("pl-PL", { month: "long" });
+		const monthEnd = sunday.toLocaleDateString("pl-PL", { month: "long" });
+
+		const year = sunday.getFullYear();
+
+		let result;
+
+		if (sameMonth) {
+			// 13–19 kwietnia 2026
+			result = `${dayStart}–${dayEnd} ${monthStart} ${year}`;
+		} else {
+			// 29 marca – 4 kwietnia 2026
+			result = `${dayStart} ${monthStart} – ${dayEnd} ${monthEnd} ${year}`;
+		}
+
+		return result.charAt(0).toUpperCase() + result.slice(1);
+	}
+
 	polish_month_and_year (date) {
 		const d = new Date(date);
 		if (isNaN(d)) return "";
@@ -84,8 +120,13 @@ export class Calendar {
 		date = new Date(date);
 		if (isNaN(date)) date = new Date();
 
-		// klon daty, żeby nie ruszać oryginału, na podstawie liczby sekund
 		const clone = (d) => new Date(d.getTime());
+
+		// znajdź poniedziałek
+		const base = clone(date);
+		const day = base.getDay() || 7; // niedziela → 7
+		base.setDate(base.getDate() - day + 1);
+		base.setHours(0, 0, 0, 0);
 
 		// dzień
 		const prevDay = clone(date);
@@ -93,6 +134,13 @@ export class Calendar {
 
 		const nextDay = clone(date);
 		nextDay.setDate(nextDay.getDate() + 1);
+
+		// tydzień (liczony od poniedziałku)
+		const prevWeek = clone(base);
+		prevWeek.setDate(prevWeek.getDate() - 7);
+
+		const nextWeek = clone(base);
+		nextWeek.setDate(nextWeek.getDate() + 7);
 
 		// miesiąc
 		const prevMonth = clone(date);
@@ -110,10 +158,16 @@ export class Calendar {
 
 		return {
 			current: date,
+			week_start: this.toYMD(base), // zawsze poniedziałek
 
 			day: {
 				prev: this.toYMD(prevDay),
 				next: this.toYMD(nextDay)
+			},
+
+			week: {
+				prev: this.toYMD(prevWeek),
+				next: this.toYMD(nextWeek)
 			},
 
 			month: {
@@ -618,7 +672,7 @@ export class Calendar {
 						is_middle_day: is_middle_day,
 						is_last_day: is_last_day,
 						color: e.category_info.color ?? "#000000",
-						start: e.start.getHours() + ":" + String(e.start.getMinutes()).padStart(2, "0")
+						start: new Date(e.start).getHours() + ":" + String(new Date(e.start).getMinutes()).padStart(2, "0")
 					});
 			});
 
@@ -628,6 +682,104 @@ export class Calendar {
 
 				is_today: window.calendar.toYMD(d) === todayStr,
 				type, // prev | current | next
+
+				all_day,
+				timed
+			};
+		}
+	}
+
+	get_week_view (date = new Date()) {
+		date = new Date(date);
+		if (isNaN(date)) date = new Date();
+
+		const todayStr = this.toYMD(new Date());
+
+		// znajdź poniedziałek
+		const day = date.getDay() || 7; // niedziela → 7
+		const monday = new Date(date);
+		monday.setDate(date.getDate() - day + 1);
+
+		const days = [];
+
+		// 7 dni tygodnia
+		for (let i = 0; i < 7; i++) {
+			const d = new Date(monday);
+			d.setDate(monday.getDate() + i);
+
+			// typ względem miesiąca (opcjonalnie)
+			let type = "current";
+			if (d.getMonth() < date.getMonth()) type = "prev";
+			if (d.getMonth() > date.getMonth()) type = "next";
+
+			days.push(buildDay(d, type));
+		}
+
+		return {
+			nice_date: this.polish_week(date),
+			week_start: this.toYMD(monday),
+			days
+		};
+
+
+		// helper
+		function buildDay(d, type) {
+
+			const start = new Date(d);
+			start.setHours(0, 0, 0, 0);
+
+			const end = new Date(d);
+			end.setHours(23, 59, 59, 999);
+
+			const events = window.calendar.get_events_by_range(start, end);
+
+			const all_day = [];
+			const timed = [];
+
+			events.forEach(e => {
+
+				const eventStart = new Date(e.start);
+				const eventEnd = new Date(e.end);
+				const current = new Date(d);
+
+				eventStart.setHours(0,0,0,0);
+				eventEnd.setHours(0,0,0,0);
+				current.setHours(0,0,0,0);
+
+				const is_multi_day = eventStart.getTime() !== eventEnd.getTime();
+				const is_first_day = current.getTime() === eventStart.getTime();
+				const is_middle_day = current > eventStart && current < eventEnd;
+				const is_last_day = current.getTime() === eventEnd.getTime();
+
+				if (e.all_day) {
+					all_day.push({
+						...e,
+						is_multi_day,
+						is_first_day,
+						is_middle_day,
+						is_last_day,
+						color: e.category_info?.color ?? "#000000"
+					});
+				} else {
+					timed.push({
+						...e,
+						is_multi_day,
+						is_first_day,
+						is_middle_day,
+						is_last_day,
+						color: e.category_info?.color ?? "#000000",
+						start: new Date(e.start).getHours() + ":" +
+							String(new Date(e.start).getMinutes()).padStart(2, "0")
+					});
+				}
+			});
+
+			return {
+				date: d,
+				ymd: window.calendar.toYMD(d),
+
+				is_today: window.calendar.toYMD(d) === todayStr,
+				type,
 
 				all_day,
 				timed
