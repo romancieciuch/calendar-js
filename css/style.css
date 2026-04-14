@@ -319,7 +319,6 @@ header nav a:hover {
 
 header .button {
 	padding: 0.5rem 0.75rem;
-	flex: 0;
 }
 
 .events-list {
@@ -457,7 +456,7 @@ header .button {
 @media (max-width: 760px) {
 	.menu-toggle {
 		display: flex;
-		z-index: 1;
+		z-index: 2;
 	}
 
 	.nav {
@@ -485,10 +484,15 @@ header .button {
 		opacity: 1;
 		pointer-events: auto;
 		transform: translateY(0);
+		z-index: 1;
 	}
 
 	.nav a {
 		width: 100%;
+	}
+
+	header .button {
+		flex: 0;
 	}
 }
 
