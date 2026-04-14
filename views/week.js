@@ -27,6 +27,30 @@ window.view = (params) => {
 			let dayHTML = "";
 
 			let n = 0;
+			day.all_day.forEach(e => {
+				const top = `calc(${n} * var(--event-height) + ${n * 2}px)`;
+
+				let multiday_class = ` week-event__all_day`;
+				if (e.is_multi_day) {
+					if (e.is_first_day) multiday_class = ` week-event__multi_day week-event__first_day`;
+					if (e.is_middle_day) multiday_class = ` week-event__multi_day week-event__middle_day`;
+					if (e.is_last_day) multiday_class = ` week-event__multi_day week-event__last_day`;
+				}
+
+				dayHTML += `
+					<a
+						class="week-event${multiday_class}"
+						href="#event/${e.id}"
+						style="top: ${top}; background:${e.color};"
+					>
+						${e.title}
+					</a>
+				`;
+
+				n++;
+			});
+
+			n = 0;
 			day.timed.forEach(e => {
 				const start = new Date(`${day.ymd}T${e.start}`);
 				const end = new Date(e.end);
@@ -37,7 +61,7 @@ window.view = (params) => {
 				const duration = endHour - startHour;
 
 				// 🔥 pozycja względem siatki (zakładamy start od 6:00)
-				const top = `calc((${startHour} - 6) * var(--hour-height))`;
+				const top = `calc((${startHour} - 5) * var(--hour-height))`;
 				const left = `${n * (1 / day.timed.length) * 100}%`;
 				const width = `${(1 / day.timed.length) * 100}%`;
 				const height = `calc(${duration} * var(--hour-height))`;

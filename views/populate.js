@@ -28,6 +28,15 @@ const events = [
     category: "cat-private"
   },
   {
+    id: "evt-2a",
+    title: "Urodziny szefowej",
+    desc: "",
+    start: "2026-04-14T00:00:00.000Z",
+    end: "2026-04-14T00:00:00.000Z",
+    all_day: true,
+    category: "cat-work"
+  },
+  {
     id: "evt-2",
     title: "Plan sprintu",
     desc: "",
@@ -40,7 +49,7 @@ const events = [
     id: "evt-2b",
     title: "Odwiedziny Aneta",
     desc: "",
-    start: "2026-04-14T10:30:00.000Z",
+    start: "2026-04-14T09:30:00.000Z",
     end: "2026-04-14T11:30:00.000Z",
     all_day: false,
     category: "cat-private"

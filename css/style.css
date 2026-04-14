@@ -12,6 +12,7 @@
 	--border-color: #ddd;
 
 	--hour-height: 60px;
+	--event-height: 24px;
 	--event-width: 200px;
 
 	--black: #222;
@@ -521,7 +522,7 @@ header .button {
 
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
+	gap: 0.25rem;
 
 	position: relative;
 }
@@ -670,8 +671,8 @@ header .button {
 .week-event {
 	position: absolute;
 	top: 80px;
-	left: 5px;
-	right: 5px;
+	left: 0;
+	right: 0;
 
 	background: var(--primary);
 	color: #fff;
@@ -685,8 +686,36 @@ header .button {
 	text-decoration: none;
 }
 
+.week-event__all_day {
+	background: var(--primary);
+	color: #fff;
+	margin: 0 0.5rem;
+}
+
+.week-event__multi_day {
+	border-radius: 0;
+	margin: 0;
+}
+
+.week-event__first_day {
+	border-radius: var(--border-radius) 0 0 var(--border-radius);
+	margin-left: 0.5rem;
+}
+
+.week-event__last_day {
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+	margin-right: 0.5rem;
+}
+
+.week-event__timed {
+	border-left: 4px solid var(--primary);
+	color: var(--text-color);
+	padding: 0 0 0 0.5rem;
+	margin: 0 0.5rem;
+}
+
 .week-event:hover {
-	background: var(--primary-hover);
+	background: var(--primary-hover) !important;
 	color: #fff;
 }
 

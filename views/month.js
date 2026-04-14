@@ -58,7 +58,4 @@ window.view = (params) => {
 
 	document.querySelector("[data-month]").innerHTML = html;
 
-
-
-
 };
