@@ -374,6 +374,7 @@ header .button {
 .event-month {
 	font-size: 12px;
 	color: #fff; /*var(--text-muted-color);*/
+	text-transform: uppercase;
 }
 
 .event-content {

@@ -97,9 +97,7 @@ window.view = (params) => {
 		let html = ``;
 
 		for (let el of events) {
-			const date = new Date(el.start);
-			const day = date.getDate();
-			const month = window.calendar.polish_month_name(date.getMonth());
+			const date_info = window.calendar.superdate(el.start);
 
 			let desc = ``;
 			if (el.desc) desc = `<p class="event-desc">${el.desc}</p>`;
@@ -111,8 +109,8 @@ window.view = (params) => {
 						<label for="${el.id}" class="checkbox-box"></label>
 					</div>
 					<div class="event-date" style="background-color: ${el.category_info?.color || '#000000'}">
-						<span class="event-day">${day}</span>
-						<span class="event-month">${month}</span>
+						<span class="event-day">${date_info.day}</span>
+						<span class="event-month">${date_info.month_short}</span>
 					</div>
 
 					<div class="event-content">
