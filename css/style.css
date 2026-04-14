@@ -618,7 +618,7 @@ header .button {
 	border: 1px solid var(--border-color);
 	border-radius: var(--border-radius);
 	overflow: hidden;
-	min-width: 600px;
+	min-width: 750px;
 }
 
 .week-header {
