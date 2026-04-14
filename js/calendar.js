@@ -209,6 +209,74 @@ export class Calendar {
 		return d.getFullYear();
 	}
 
+	superdate (dateInput = new Date()) {
+		let d = new Date(dateInput);
+		if (isNaN(d)) d = new Date();
+
+		const pad = (n) => String(n).padStart(2, "0");
+
+		const days_pl = ["niedziela","poniedziałek","wtorek","środa","czwartek","piątek","sobota"];
+		const days_short_pl = ["nd","pon","wto","śr","czw","pt","sob"];
+
+		const months_pl = ["styczeń","luty","marzec","kwiecień","maj","czerwiec","lipiec","sierpień","wrzesień","październik","listopad","grudzień"];
+		const months_genitive_pl = ["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
+		const months_short_pl = ["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru"];
+
+		const day = d.getDate();
+		const month = d.getMonth() + 1;
+		const weekday = d.getDay(); // 0–6 (nd–sob)
+		const year = d.getFullYear();
+		const days_in_month = new Date(year, month, 0).getDate();
+
+		// poniedziałek wstecz
+		const monday = new Date(d);
+		const wd = monday.getDay() || 7;
+		monday.setDate(monday.getDate() - wd + 1);
+		monday.setHours(0,0,0,0);
+
+		// wczoraj / jutro
+		const yesterday = new Date(d);
+		yesterday.setDate(d.getDate() - 1);
+
+		const tomorrow = new Date(d);
+		tomorrow.setDate(d.getDate() + 1);
+
+		// formatter
+		const toYMD = (date) =>
+			`${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+
+		return {
+			// podstawowe
+			day,                                // 14
+			month_padded: pad(month),           // 04
+			month,                              // 4
+			days_in_month,						// 31
+			year,				                // 2026
+
+			// dzień tygodnia
+			weekday_number: weekday,            // 2
+			weekday_name: days_pl[weekday],      // wtorek
+			weekday_short: days_short_pl[weekday],// wto
+
+			// miesiące
+			month_name: months_pl[month - 1],                 // kwiecień
+			month_name_genitive: months_genitive_pl[month - 1], // kwietnia
+			month_short: months_short_pl[month - 1],           // kwi
+
+			// czas
+			time_short: `${pad(d.getHours())}:${pad(d.getMinutes())}`, // 20:01
+			hour: d.getHours(),                 // 20
+			minute: d.getMinutes(),             // 1
+			minute_padded: pad(d.getMinutes()), // "01"
+
+			// daty pomocnicze
+			ymd: toYMD(d),                     // 2026-04-14
+			week_monday: toYMD(monday),        // 2026-04-13
+			yesterday: toYMD(yesterday),       // 2026-04-13
+			tomorrow: toYMD(tomorrow)          // 2026-04-15
+		};
+	}
+
 
 
 	// Wydarzenia
@@ -585,7 +653,7 @@ export class Calendar {
 
 		const todayStr = this.toYMD(new Date());
 		const firstDay = new Date(year, month, 1);
-		const daysInMonth = new Date(year, month + 1, 0).getDate();
+		const days_in_month = new Date(year, month + 1, 0).getDate();
 
 		let startWeekDay = firstDay.getDay();
 		if (startWeekDay === 0) startWeekDay = 7; // niedziela → 7
@@ -602,7 +670,7 @@ export class Calendar {
 		}
 
 		// DNI BIEŻĄCEGO MIESIĄCA
-		for (let i = 1; i <= daysInMonth; i++) {
+		for (let i = 1; i <= days_in_month; i++) {
 			const d = new Date(year, month, i);
 
 			days.push(buildDay(d, "current"));
