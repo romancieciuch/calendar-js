@@ -44,7 +44,7 @@ window.view = (params) => {
 
             html += `
                 <a class="list-event" href="#event/${el.id}">
-                    <div class="event-date">
+                    <div class="event-date" style="background-color: ${el.category_info?.color || '#000000'}">
                         <span class="event-day">${day}</span>
                         <span class="event-month">${month}</span>
                     </div>

@@ -110,7 +110,7 @@ window.view = (params) => {
 						<input type="checkbox" id="${el.id}" name="events[]" value="${el.id}">
 						<label for="${el.id}" class="checkbox-box"></label>
 					</div>
-					<div class="event-date">
+					<div class="event-date" style="background-color: ${el.category_info?.color || '#000000'}">
 						<span class="event-day">${day}</span>
 						<span class="event-month">${month}</span>
 					</div>
