@@ -192,12 +192,12 @@ h3:first-child {
 
 @media (max-width: 760px) {
 	h1 {
-		font-size: 26px;
+		font-size: 24px;
 		margin: 1.5rem auto;
 	}
 
 	h2 {
-		font-size: 22px;
+		font-size: 21px;
 	}
 
 	h3 {
