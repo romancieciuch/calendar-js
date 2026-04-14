@@ -242,14 +242,16 @@ export class Calendar {
 		tomorrow.setDate(d.getDate() + 1);
 
 		// formatter
-		const toYMD = (date) =>
-			`${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+		const toYMD = (date) => `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+		const toYM = (date) => `${date.getFullYear()}-${pad(date.getMonth()+1)}`;
+		const toYMDHI = (date) => `${year}-${pad(month)}-${pad(day)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 
 		return {
 			// podstawowe
 			day,                                // 14
-			month_padded: pad(month),           // 04
+			day_padded: pad(day),               // 01
 			month,                              // 4
+			month_padded: pad(month),           // 04
 			days_in_month,						// 31
 			year,				                // 2026
 
@@ -266,11 +268,14 @@ export class Calendar {
 			// czas
 			time_short: `${pad(d.getHours())}:${pad(d.getMinutes())}`, // 20:01
 			hour: d.getHours(),                 // 20
+			hour_padded: pad(d.getHours()),     // 09
 			minute: d.getMinutes(),             // 1
 			minute_padded: pad(d.getMinutes()), // "01"
 
 			// daty pomocnicze
 			ymd: toYMD(d),                     // 2026-04-14
+			ym: toYM(d),                       // 2026-04
+			ymdhi: toYMDHI(d),               // 2026-04
 			week_monday: toYMD(monday),        // 2026-04-13
 			yesterday: toYMD(yesterday),       // 2026-04-13
 			tomorrow: toYMD(tomorrow)          // 2026-04-15
