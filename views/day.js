@@ -16,35 +16,42 @@ window.view = (params) => {
 	document.querySelector("[data-next]").href = `#day/${navi.day.next}`;
 
 
-	// Wydarzenia godzinowe
-	let html = ``;
-	let n = 0;
-	for (let el of day.timed) {
-		html += `
-			<a class="day-event" href="#event/${el.id}"
-				style="top: calc(((${el.start_hour} + ${el.start_minutes / 60}) - 6) * var(--hour-height));
-				left: calc((${n}) * var(--event-width));
-				width: calc(var(--event-width));
-				height: calc(${el.duration_hours} * var(--hour-height));
-				background-color: ${el.color}">
-				${el.start} &bull; ${el.title}
-			</a>
-		`;
-		n++;
+	document.querySelector("[data-events]").innerHTML = render_day_timed_events();
+	document.querySelector("[data-all-day-events]").innerHTML = render_day_all_day_events();
+
+
+	function render_day_timed_events () {
+		// Wydarzenia godzinowe
+		let html = ``;
+		let n = 0;
+		for (let el of day.timed) {
+			html += `
+				<a class="day-event" href="#event/${el.id}"
+					style="top: calc(((${el.start_hour} + ${el.start_minutes / 60}) - 6) * var(--hour-height));
+					left: calc((${n}) * var(--event-width));
+					width: calc(var(--event-width));
+					height: calc(${el.duration_hours} * var(--hour-height));
+					background-color: ${el.color}">
+					${el.start} &bull; ${el.title}
+				</a>
+			`;
+			n++;
+		}
+
+		return html;
 	}
 
-	document.querySelector("[data-events]").innerHTML = html;
+	function render_day_all_day_events () {
+		// Wydarzenia całodniowe
+		let html = ``;
+		for (let el of day.all_day)
+			html += `
+				<a class="day-event day-event__all-day" href="#event/${el.id}" style="background-color: ${el.color}">
+					${window.calendar.format_event_date(el)} &bull; ${el.title}
+				</a>
+			`;
 
-
-	// Wydarzenia całodniowe
-	let html2 = ``;
-	for (let el of day.all_day)
-		html2 += `
-			<a class="day-event day-event__all-day" href="#event/${el.id}" style="background-color: ${el.color}">
-				${window.calendar.format_event_date(el)} &bull; ${el.title}
-			</a>
-		`;
-
-	document.querySelector("[data-all-day-events]").innerHTML = html2;
+		return html;
+	}
 
 };

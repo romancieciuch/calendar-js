@@ -358,6 +358,10 @@ header .button {
 	font-size: 12px;
 }
 
+.event-date.square {
+	aspect-ratio: 1;
+}
+
 .event-date.center {
 	width: fit-content;
 	display: block;
@@ -588,20 +592,20 @@ header .button {
 	background: #f9fafb;
 }
 
-.day.today {
+.today {
 	outline: 2px solid var(--primary);
 	outline-offset: -2px;
 	background: #e3ebfc;
 }
 
-.day.prev-month,
-.day.next-month {
+.prev-month,
+.next-month {
     opacity: 0.45;
     color: var(--text-muted);
 }
 
-.day.prev-month .day-number,
-.day.next-month .day-number {
+.prev-month .day-number,
+.next-month .day-number {
 	color: var(--text-muted-color);
 }
 
@@ -740,6 +744,9 @@ header .button {
 
 .all-day-events {
 	margin: 0 auto 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
 }
 
 /* wrapper */

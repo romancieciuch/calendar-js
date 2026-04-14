@@ -38,6 +38,24 @@ window.view = (params) => {
 		}
 	});
 
+	// Obsługa szukajki
+	let search_timeout;
+
+	document.querySelector("[data-search]").addEventListener("input", () => {
+		clearTimeout(search_timeout);
+
+		search_timeout = setTimeout(() => {
+			offset = 0;
+			loading = false;
+
+			document.querySelector("[data-events-list]").innerHTML = "";
+			observer.disconnect();
+			observer.observe(document.querySelector("[data-events-list-sentinel]"));
+
+			render();
+		}, 300);
+	});
+
 	// Filtrowanie listy
 	const limit = 5;
 	let offset = 0;
@@ -58,27 +76,6 @@ window.view = (params) => {
 	observer.observe(document.querySelector("[data-events-list-sentinel]"));
 
 	render();
-
-
-	// Obsługa szukajki
-	let search_timeout;
-
-	document.querySelector("[data-search]").addEventListener("input", () => {
-		clearTimeout(search_timeout);
-
-		search_timeout = setTimeout(() => {
-			offset = 0;
-			loading = false;
-
-			document.querySelector("[data-events-list]").innerHTML = "";
-
-			observer.disconnect();
-			observer.observe(document.querySelector("[data-events-list-sentinel]"));
-
-			render();
-		}, 300);
-	});
-
 
 	function render () {
 		if (loading) return;

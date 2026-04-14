@@ -42,6 +42,7 @@ window.view = (params) => {
 						class="week-event${multiday_class}"
 						href="#event/${e.id}"
 						style="top: ${top}; background:${e.color};"
+						title="${e.title}"
 					>
 						${e.title}
 					</a>
@@ -80,15 +81,16 @@ window.view = (params) => {
 							width: ${width};
 							height: ${height};
 							background:${e.color};"
+						title="${time} &bull; ${e.title}"
 					>
-						${time} ${e.title}
+						${time} &bull; ${e.title}
 					</a>
 				`;
 
 				n++;
 			});
 
-			html += `<div class="week-day">${dayHTML}</div>`;
+			html += `<div class="week-day${day.is_today ? ' today' : ''}">${dayHTML}</div>`;
 		});
 
 		return html;

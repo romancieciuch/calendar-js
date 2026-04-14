@@ -9,6 +9,7 @@ window.view = (params) => {
 		el.innerHTML = category.title;
 
 	document.querySelector("[data-color]").style.backgroundColor = category.color ?? "#000";
+	document.querySelector("[data-id]").innerHTML = category.id ?? "-";
 
 	document.querySelector("[data-button-edit]").href = `#category-edit/${category.id}`;
 	document.querySelector("[data-button-delete]").href = `#category-delete/${category.id}`;
