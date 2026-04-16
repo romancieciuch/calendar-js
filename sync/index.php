@@ -5,11 +5,11 @@
 	$referer = $_SERVER['HTTP_REFERER'] ?? '';
 	$host = $_SERVER['HTTP_HOST'];
 
-	// if (empty($referer) || parse_url($referer, PHP_URL_HOST) !== $host) {
-	// 	http_response_code(403);
-	// 	echo json_encode(['error' => 'Forbidden: Cross-domain requests not allowed']);
-	// 	exit;
-	// }
+	if (empty($referer) || parse_url($referer, PHP_URL_HOST) !== $host) {
+		http_response_code(403);
+		echo json_encode(['error' => 'Forbidden: Cross-domain requests not allowed']);
+		exit;
+	}
 
 	// 2. Obsługa tylko metody POST
 	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

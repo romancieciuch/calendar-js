@@ -12,6 +12,7 @@ window.view = (params) => {
 	];
 
 	localStorage.setItem("categories", JSON.stringify(categories));
+	calendar.sync();
 
 
 
@@ -228,5 +229,6 @@ window.view = (params) => {
 	];
 
 	localStorage.setItem("events", JSON.stringify(events));
+	calendar.sync();
 
 };

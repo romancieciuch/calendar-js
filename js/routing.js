@@ -1,4 +1,4 @@
-export function load_view () {
+export function load_view (ver = 1) {
 	const hash = window.location.hash.replace(/^#\/?/, "");
 	const parts = hash.split("/");
 
@@ -6,9 +6,8 @@ export function load_view () {
 	const params = parts.slice(1);
 
 	const app = document.querySelector("#app");
-	const ymd = new Date().toISOString().slice(0, 10);
 
-	fetch(`views/${view}.html`)
+	fetch(`views/${view}.html?v=${ver}`)
 	.then(r => {
 		if (!r.ok) throw new Error();
 		return r.text();
@@ -22,7 +21,7 @@ export function load_view () {
 
 		// Załaduj JS
 		const script = document.createElement("script");
-		script.src = `views/${view}.js`;
+		script.src = `views/${view}.js?v=${ver}`;
 		script.onload = () => {
 			if (window["view"])
 				window["view"](params);
