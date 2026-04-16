@@ -1,14 +1,14 @@
 window.view = (params) => {
 
 	const event_id = params[0] ?? 0;
-	const event = window.calendar.get_event(event_id);
+	const event = calendar.get_event(event_id);
 	if (!event)
 		window.location.hash = "404";
 
 	for (let el of document.querySelectorAll("[data-title]"))
 		el.innerHTML = event.title;
 
-	document.querySelector("[data-dates]").innerHTML = window.calendar.format_event_date(event);
+	document.querySelector("[data-dates]").innerHTML = calendar.format_event_date(event);
 
 	document.querySelector("[data-button-view]").href = `#event/${event.id}`;
 	document.querySelector("[data-button-delete]").dataset.id = event.id;
@@ -18,7 +18,7 @@ window.view = (params) => {
 	const page = document.querySelector(".page");
 
 	document.querySelector("[data-button-delete]").addEventListener("click", () => {
-		const res = window.calendar.delete_event(event_id);
+		const res = calendar.delete_event(event_id);
 
 		if (res)
 			page.innerHTML = `

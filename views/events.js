@@ -21,7 +21,7 @@ window.view = (params) => {
 		const ids = [...document.querySelectorAll(".list-event input:checked")]
 						.map(el => el.value);
 
-		window.calendar.export_events_to_ics(ids);
+		calendar.export_events_to_ics(ids);
 
 		console.log("Eksportuję wydarzenia: ");
 		console.log(ids);
@@ -31,7 +31,7 @@ window.view = (params) => {
 	document.querySelector("button[data-delete-selected]").addEventListener("click", () => {
 		for (let el of document.querySelectorAll(".list-event input:checked")) {
 
-			let res = window.calendar.delete_event(el.value);
+			let res = calendar.delete_event(el.value);
 			el.closest(".list-event").remove();
 
 			console.log(`Usuwam wydarzenie: ${el.value} (${res})`);
@@ -83,7 +83,7 @@ window.view = (params) => {
 
 		const events_list = document.querySelector("[data-events-list]");
 		const search = document.querySelector("[data-search]");
-		const events = window.calendar.get_events_by_range("0000-01-01", "9999-12-31", offset, limit, search.value ?? null);
+		const events = calendar.get_events_by_range("0000-01-01", "9999-12-31", offset, limit, search.value ?? null);
 
 		if (events.length === 0) {
 			observer.disconnect();
@@ -94,7 +94,7 @@ window.view = (params) => {
 		let html = ``;
 
 		for (let el of events) {
-			const date_info = window.calendar.superdate(el.start);
+			const date_info = calendar.superdate(el.start);
 
 			let desc = ``;
 			if (el.desc) desc = `<p class="event-desc">${el.desc}</p>`;
@@ -116,7 +116,7 @@ window.view = (params) => {
 								${el.title}
 							</a>
 						</h3>
-						<span class="event-time">${window.calendar.format_event_date(el)}</span>
+						<span class="event-time">${calendar.format_event_date(el)}</span>
 						${desc}
 					</div>
 				</div>

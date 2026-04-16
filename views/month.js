@@ -1,7 +1,7 @@
 window.view = (params) => {
 
 	const month = params[0] ?? "";
-	const days = window.calendar.get_month_view(month);
+	const days = calendar.get_month_view(month);
 	if (!days)
 		window.location.hash = "404";
 
@@ -11,7 +11,7 @@ window.view = (params) => {
 
 
 	// Nawigacja
-	const navi = window.calendar.get_date_prev_next(month);
+	const navi = calendar.get_date_prev_next(month);
 	document.querySelector("[data-prev]").href = `#month/${navi.month.prev}`;
 	document.querySelector("[data-next]").href = `#month/${navi.month.next}`;
 

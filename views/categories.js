@@ -1,7 +1,7 @@
 window.view = (params) => {
 
 	const categories_list = document.querySelector("[data-categories-list]");
-    const categories = window.calendar.get_categories();
+    const categories = calendar.get_categories();
 
 	categories_list.innerHTML = render_categories_list();
 

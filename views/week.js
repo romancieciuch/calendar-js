@@ -1,7 +1,7 @@
 window.view = (params) => {
 
 	const week = params[0] ?? "";
-	const days = window.calendar.get_week_view(week);
+	const days = calendar.get_week_view(week);
 	if (!days)
 		window.location.hash = "404";
 
@@ -11,7 +11,7 @@ window.view = (params) => {
 
 
 	// Nawigacja
-	const navi = window.calendar.get_date_prev_next(week);
+	const navi = calendar.get_date_prev_next(week);
 
 
 	document.querySelector("[data-prev]").href = `#week/${navi.week.prev}`;
@@ -114,7 +114,7 @@ window.view = (params) => {
 			const dayDate = new Date(monday);
 			dayDate.setDate(monday.getDate() + i);
 
-			const ymd = window.calendar.toYMD(dayDate);
+			const ymd = calendar.toYMD(dayDate);
 			const dayNum = dayDate.getDate();
 			const month = monthsShort[dayDate.getMonth()];
 

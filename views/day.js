@@ -1,7 +1,7 @@
 window.view = (params) => {
 
 	const date = params[0] ?? 0;
-	const day = window.calendar.get_day_view(date);
+	const day = calendar.get_day_view(date);
 	if (!day)
 		window.location.hash = "404";
 
@@ -11,7 +11,7 @@ window.view = (params) => {
 
 
 	// Nawigacja
-	const navi = window.calendar.get_date_prev_next(date);
+	const navi = calendar.get_date_prev_next(date);
 	document.querySelector("[data-prev]").href = `#day/${navi.day.prev}`;
 	document.querySelector("[data-next]").href = `#day/${navi.day.next}`;
 
@@ -47,7 +47,7 @@ window.view = (params) => {
 		for (let el of day.all_day)
 			html += `
 				<a class="day-event day-event__all-day" href="#event/${el.id}" style="background-color: ${el.color}">
-					${window.calendar.format_event_date(el)} &bull; ${el.title}
+					${calendar.format_event_date(el)} &bull; ${el.title}
 				</a>
 			`;
 

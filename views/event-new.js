@@ -4,8 +4,8 @@ window.view = (params) => {
 	const error_box = form.querySelector(".error");
 	const good_box = form.querySelector(".good");
 
-	const categories = form.querySelector("#category");
-	categories.innerHTML = window.calendar.populate_category_select();
+	const categories = form.querySelector("[data-categories]");
+	categories.innerHTML = calendar.populate_category_select();
 
 	form.addEventListener("submit", (e) => {
 		e.preventDefault();

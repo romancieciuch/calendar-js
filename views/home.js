@@ -24,7 +24,7 @@ window.view = (params) => {
         loading = true;
 
         const events_list = document.querySelector("[data-events-list]");
-        const events = window.calendar.get_events_by_range(Date.now(), "9999-12-31", offset, limit);
+        const events = calendar.get_events_by_range(Date.now(), "9999-12-31", offset, limit);
 
         if (events.length === 0) {
             observer.disconnect();
@@ -35,7 +35,7 @@ window.view = (params) => {
         let html = ``;
 
         for (let el of events) {
-			const date_info = window.calendar.superdate(el.start);
+			const date_info = calendar.superdate(el.start);
 
             let desc = ``;
             if (el.desc) desc = `<p class="event-desc">${el.desc}</p>`;
@@ -49,7 +49,7 @@ window.view = (params) => {
 
                     <div class="event-content">
                         <h3 class="event-title">${el.title}</h3>
-                        <span class="event-time">${window.calendar.format_event_date(el)}</span>
+                        <span class="event-time">${calendar.format_event_date(el)}</span>
                         ${desc}
                     </div>
                 </a>

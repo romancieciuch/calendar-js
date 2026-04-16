@@ -1,0 +1,37 @@
+<div class="page-width">
+	<h1 class="page-title acenter">Ustawienia</h1>
+</div>
+
+<div class="page-width page-width__narrow">
+	<div class="page">
+		<form class="form">
+			<h2>Synchronizacja</h2>
+			<p>W tym miejscu możesz włączyć synchronizację na wielu urządzeniach.</p>
+			<p>Wystarczy, że skopiujesz wygenerowany token i wkleisz na dowolnym urządzeniu.</p>
+
+			<div class="form-row">
+				<label class="form-label" for="sync">Synchronizacja</label>
+				<select data-sync class="form-field" id="sync" name="sync">
+					<option value="0">Wyłączona</option>
+					<option value="1">Włączona</option>
+				</select>
+			</div>
+
+			<div class="form-row">
+				<label class="form-label" for="token">Token do synchronizacji na wielu urządzeniach</label>
+				<input data-token class="form-field" type="text" id="token" name="token">
+			</div>
+
+			<div class="form-row acenter">
+				<button class="button" type="submit">Zapisz ustawienia</button>
+			</div>
+
+			<div class="error"></div>
+			<div class="good"></div>
+		</form>
+	</div>
+</div>
+
+<div class="page-width acenter">
+	<a class="go-back" href="#event/12345678">Powrót</a>
+</div>

@@ -1,7 +1,7 @@
 window.view = (params) => {
 
 	const category_id = params[0] ?? 0;
-	const category = window.calendar.get_category(category_id);
+	const category = calendar.get_category(category_id);
 	if (!category)
 		window.location.hash = "404";
 
@@ -16,7 +16,7 @@ window.view = (params) => {
 	const page = document.querySelector(".page");
 
 	document.querySelector("[data-button-delete]").addEventListener("click", () => {
-		const res = window.calendar.delete_category(category_id);
+		const res = calendar.delete_category(category_id);
 
 		if (res)
 			page.innerHTML = `

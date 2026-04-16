@@ -1,0 +1,6 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^sync/([^/]+)/?$ sync/index.php?name=$1 [L,QSA]
+</IfModule>

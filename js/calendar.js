@@ -1,8 +1,11 @@
 export class Calendar {
 	#events_storage = "events";
 	#categories_storage = "categories";
+	#settings_storage = "settings";
 
-
+	constructor () {
+		this.update_local_data();
+	}
 
 	// Ogólne
 
@@ -10,8 +13,93 @@ export class Calendar {
 		return prefix + Date.now().toString(36) + Math.random().toString(36).substring(2);
 	}
 
-	save (type, data) {
+	save (type, data, sync = true) {
 		localStorage.setItem(type, JSON.stringify(data));
+
+		if (sync)
+			this.sync();
+	}
+
+	async sync () {
+		const events = this.get_events();
+		const categories = this.get_categories();
+		const settings = this.get_settings();
+
+		if (!settings.sync || !settings.token) return;
+
+		const payload = {
+			events: events,
+			categories: categories,
+			synced_at: new Date().toISOString()
+		};
+
+		try {
+			const response = await fetch(`sync/${settings.token}/`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(payload)
+			});
+
+			const data = await response.json();
+
+			if (response.ok) {
+				console.log('Synchronizacja zakończona sukcesem: ', data);
+				return true;
+			} else {
+				console.error('Błąd serwera: ', data.error || 'Unknown error');
+				return false;
+			}
+
+		} catch (error) {
+
+			console.error('Błąd sieci lub parsowania: ', error);
+			return false;
+		}
+	}
+
+	async update_local_data () {
+		const events = this.get_events();
+		const categories = this.get_categories();
+		const settings = this.get_settings();
+
+		if (!settings.sync || !settings.token) return;
+
+		try {
+			const response = await fetch(`storage/${settings.token}.json`, {
+				method: 'GET',
+				cache: 'no-cache'
+			});
+
+			if (!response.ok) {
+				if (response.status === 404) {
+					console.log('Brak pliku synchronizacji na serwerze (może pierwsze uruchomienie).');
+					return false;
+				}
+				throw new Error(`Błąd HTTP: ${response.status}`);
+			}
+
+			const data = await response.json();
+
+			if (data.events && data.categories) {
+				this.save(this.#events_storage, data.events, false);
+				this.save(this.#categories_storage, data.categories, false);
+
+				console.log('Dane w localStorage zostały zaktualizowane.', data);
+				return true;
+
+			} else {
+
+				console.error('Pobrany plik ma nieprawidłową strukturę.');
+				return false;
+			}
+
+		} catch (error) {
+
+			console.error('Błąd podczas pobierania danych: ', error);
+			return false;
+		}
 	}
 
 	format_event_date (event) {
@@ -282,6 +370,46 @@ export class Calendar {
 			yesterday: toYMD(yesterday),       // 2026-04-13
 			tomorrow: toYMD(tomorrow)          // 2026-04-15
 		};
+	}
+
+	generate_random_string (length) {
+		const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+		let result = '';
+
+		for (let i = 0; i < length; i++)
+			result += chars.charAt(Math.floor(Math.random() * chars.length));
+
+		return result;
+	};
+
+
+
+	// Ustawienia
+
+	settings_dto (args = {}) {
+		const token = typeof args.token === 'string' ? args.token.trim() : "";
+		const sync = args.sync === "1" ? true : false;
+
+		return {
+			token: token,
+			sync:  sync
+		};
+	}
+
+	get_settings () {
+		return JSON.parse(localStorage.getItem(this.#settings_storage) ?? "[]");
+	}
+
+	update_settings (settings_dto) {
+		const updated_settings = {
+			...settings_dto,
+			updated_at: this.superdate().ymdhi
+		};
+
+		// Zapisujemy zmiany
+		this.save(this.#settings_storage, updated_settings);
+
+		return updated_settings;
 	}
 
 
@@ -613,7 +741,7 @@ export class Calendar {
 				all_day.push({
 					...e,
 					duration_days: duration_days,
-					color: e.category_info.color ?? "#000000"
+					color: e.category_info?.color || "#000000"
 				});
 
 			} else {
@@ -633,7 +761,7 @@ export class Calendar {
 					start: start.getHours() + ":" + String(start.getMinutes()).padStart(2, "0"),
 					end: end.getHours() + ":" + String(end.getMinutes()).padStart(2, "0"),
 					duration_hours: duration_hours,
-					color: e.category_info.color ?? "#000000"
+					color: e.category_info?.color || "#000000"
 				});
 			}
 		});
@@ -734,7 +862,7 @@ export class Calendar {
 						is_first_day: is_first_day,
 						is_middle_day: is_middle_day,
 						is_last_day: is_last_day,
-						color: e.category_info.color ?? "#000000"
+						color: e.category_info?.color || "#000000"
 					});
 				else
 					timed.push({
@@ -743,7 +871,7 @@ export class Calendar {
 						is_first_day: is_first_day,
 						is_middle_day: is_middle_day,
 						is_last_day: is_last_day,
-						color: e.category_info.color ?? "#000000",
+						color: e.category_info?.color || "#000000",
 						start: new Date(e.start).getHours() + ":" + String(new Date(e.start).getMinutes()).padStart(2, "0")
 					});
 			});
@@ -830,7 +958,7 @@ export class Calendar {
 						is_first_day,
 						is_middle_day,
 						is_last_day,
-						color: e.category_info?.color ?? "#000000"
+						color: e.category_info?.color || "#000000"
 					});
 				} else {
 					timed.push({
@@ -839,7 +967,7 @@ export class Calendar {
 						is_first_day,
 						is_middle_day,
 						is_last_day,
-						color: e.category_info?.color ?? "#000000",
+						color: e.category_info?.color || "#000000",
 						start: new Date(e.start).getHours() + ":" +
 							String(new Date(e.start).getMinutes()).padStart(2, "0")
 					});

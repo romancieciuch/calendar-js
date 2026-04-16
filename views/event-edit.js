@@ -1,7 +1,7 @@
 window.view = (params) => {
 
 	const event_id = params[0] ?? 0;
-	const event = window.calendar.get_event(event_id);
+	const event = calendar.get_event(event_id);
 	if (!event)
 		window.location.hash = "404";
 
@@ -11,7 +11,7 @@ window.view = (params) => {
 	const good_box = form.querySelector(".good");
 
 	const categories = form.querySelector("#category");
-	categories.innerHTML = window.calendar.populate_category_select(event.category);
+	categories.innerHTML = calendar.populate_category_select(event.category);
 
 
 	for (let el of document.querySelectorAll("[data-title]"))
@@ -20,8 +20,8 @@ window.view = (params) => {
 	document.querySelector("#title").value = event.title;
 	document.querySelector("#desc").value = event.desc;
 
-	document.querySelector("#start").value = window.calendar.format_for_datetime_local(event.start);
-	document.querySelector("#end").value = window.calendar.format_for_datetime_local(event.end);
+	document.querySelector("#start").value = calendar.format_for_datetime_local(event.start);
+	document.querySelector("#end").value = calendar.format_for_datetime_local(event.end);
 	document.querySelector("#all_day").checked = event.all_day;
 
 

@@ -1,12 +1,12 @@
 window.view = (params) => {
 
 	const event_id = params[0] ?? 0;
-	const event = window.calendar.get_event(event_id);
+	const event = calendar.get_event(event_id);
 	if (!event)
 		window.location.hash = "404";
 
 	document.querySelector("[data-title]").innerHTML = event.title;
-	document.querySelector("[data-dates]").innerHTML = window.calendar.format_event_date(event);
+	document.querySelector("[data-dates]").innerHTML = calendar.format_event_date(event);
 
 	document.querySelector("[data-category]").href = event.category ? `#category/${event.category}` : `#event/${event.id}`;
 	document.querySelector("[data-category-title]").innerHTML = event.category_info?.title ?? "Bez kategorii";
@@ -17,9 +17,9 @@ window.view = (params) => {
 	document.querySelector("[data-button-export]").dataset.id = event.id;
 	document.querySelector("[data-button-edit]").href = `#event-edit/${event.id}`;
 	document.querySelector("[data-button-delete]").href = `#event-delete/${event.id}`;
-	document.querySelector("[data-button-day]").href = `#day/${window.calendar.toYMD(event.start)}`;
+	document.querySelector("[data-button-day]").href = `#day/${calendar.toYMD(event.start)}`;
 
 	document.querySelector("[data-button-export]").addEventListener("click", () => {
-		window.calendar.export_events_to_ics(event.id);
+		calendar.export_events_to_ics(event.id);
 	});
 };
