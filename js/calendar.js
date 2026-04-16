@@ -654,7 +654,7 @@ export class Calendar {
 
 	// Eksport do ICS
 
-	export_events_to_ics(ids = []) {
+	export_events_to_ics (ids = []) {
         const events = this.get_events()
             .filter(e => ids.includes(e.id));
 
