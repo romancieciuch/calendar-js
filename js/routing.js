@@ -1,13 +1,14 @@
 export function routing () {
 
 	function load_view () {
-		let hash = window.location.hash.replace(/^#\/?/, "");
-		let parts = hash.split("/");
+		const hash = window.location.hash.replace(/^#\/?/, "");
+		const parts = hash.split("/");
 
-		let view = parts[0] || "home";
-		let params = parts.slice(1);
+		const view = parts[0] || "home";
+		const params = parts.slice(1);
 
-		let app = document.querySelector("#app");
+		const app = document.querySelector("#app");
+		const ymd = new Date().toISOString().slice(0, 10);
 
 		fetch(`views/${view}.html`)
 		.then(r => {
@@ -22,7 +23,7 @@ export function routing () {
 			app.innerHTML = html;
 
 			// Załaduj JS
-			let script = document.createElement("script");
+			const script = document.createElement("script");
 			script.src = `views/${view}.js`;
 			script.onload = () => {
 				if (window["view"])

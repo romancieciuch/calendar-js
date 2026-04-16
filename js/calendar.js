@@ -2,6 +2,8 @@ export class Calendar {
 	#events_storage = "events";
 	#categories_storage = "categories";
 
+
+
 	// Ogólne
 
 	generate_id (prefix = "evt-") {
@@ -524,63 +526,60 @@ export class Calendar {
 
 	// Eksport do ICS
 
-	export_events_to_ics (ids = []) {
-		const events = this.get_events()
-			.filter(e => ids.includes(e.id));
+	export_events_to_ics(ids = []) {
+        const events = this.get_events()
+            .filter(e => ids.includes(e.id));
 
-		const ics = [];
+        const ics = [];
 
-		ics.push("BEGIN:VCALENDAR");
-		ics.push("VERSION:2.0");
-		ics.push("PRODID:-//Mój Kalendarz//PL");
+        ics.push("BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Mój Kalendarz//PL");
 
-		for (const e of events) {
+        const format_date = (d, isAllDay) => {
+            const date = new Date(d);
 
-			const formatDate = (d) => {
-				// all_day → YYYYMMDD
-				if (!e.all_day) {
-					const date = new Date(d);
-					return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-				}
+            if (isAllDay) {
+                // Bezpiecznie pobiera samą datę (YYYYMMDD), niezależnie czy "d"
+                // to krótki string "2026-04-14", czy długie ISO z czasem.
+                return date.toISOString().split("T")[0].replace(/-/g, "");
+            }
 
-				// all-day
-				return d.replace(/-/g, "");
-			};
+            // Standardowe wydarzenia czasowe
+            return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+        };
 
-			ics.push("BEGIN:VEVENT");
-			ics.push(`UID:${e.id}`);
-			ics.push(`SUMMARY:${e.title}`);
+        for (const e of events) {
+            ics.push("BEGIN:VEVENT");
+            ics.push(`UID:${e.id}`);
+            ics.push(`SUMMARY:${e.title}`);
 
-			if (e.desc)
-				ics.push(`DESCRIPTION:${e.desc}`);
+            if (e.desc) {
+                // Zabezpieczenie przed ewentualnymi znakami nowej linii w opisie
+                ics.push(`DESCRIPTION:${e.desc.replace(/\n/g, "\\n")}`);
+            }
 
-			// ALL DAY
-			if (e.all_day) {
-				ics.push(`DTSTART;VALUE=DATE:${formatDate(e.start)}`);
-				ics.push(`DTEND;VALUE=DATE:${formatDate(e.end)}`);
-			}
+            if (e.all_day) {
+                ics.push(`DTSTART;VALUE=DATE:${format_date(e.start, true)}`);
+                ics.push(`DTEND;VALUE=DATE:${format_date(e.end, true)}`);
+            } else {
+                ics.push(`DTSTART:${format_date(e.start, false)}`);
+                ics.push(`DTEND:${format_date(e.end, false)}`);
+            }
 
-			// TIME EVENT
-			else {
-				ics.push(`DTSTART:${formatDate(e.start)}`);
-				ics.push(`DTEND:${formatDate(e.end)}`);
-			}
+            ics.push("END:VEVENT");
+        }
 
-			ics.push("END:VEVENT");
-		}
+        ics.push("END:VCALENDAR");
 
-		ics.push("END:VCALENDAR");
+        const blob = new Blob([ics.join("\r\n")], { type: "text/calendar" });
+        const url = URL.createObjectURL(blob);
 
-		const blob = new Blob([ics.join("\r\n")], { type: "text/calendar" });
-		const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "events.ics";
+        a.click();
 
-		const a = document.createElement("a");
-		a.href = url;
-		a.download = "events.ics";
-		a.click();
-
-		URL.revokeObjectURL(url);
-	}
+        URL.revokeObjectURL(url);
+    }
 
 
 

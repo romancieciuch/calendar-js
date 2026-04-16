@@ -37,7 +37,7 @@ window.view = (params) => {
 		category: "cat-private"
 	},
 	{
-		id: "evt-2a",
+		id: "evt-2c",
 		title: "Urodziny szefowej",
 		desc: "",
 		start: "2026-04-14T00:00:00.000Z",

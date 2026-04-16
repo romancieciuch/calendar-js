@@ -13,7 +13,8 @@ export function misc () {
 
 		for (let el of links)
 			el.addEventListener("click", () => {
-				toggle.click();
+				if (window.matchMedia('(max-width: 760px)').matches)
+					toggle.click();
 			});
 	}
 
