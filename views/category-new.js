@@ -22,7 +22,7 @@ window.view = (params) => {
 
 			form.reset();
 
-			good_box.textContent = "Kategoria została dodane";
+			good_box.textContent = "Kategoria została dodana";
 			setTimeout(() => {
 				good_box.textContent = "";
 			}, 3000);
