@@ -1,4 +1,4 @@
-const ver = 9;
+const ver = 10;
 
 import { load_view }  from './routing.js?v=9';
 import { misc }       from './misc.js?v=9';
