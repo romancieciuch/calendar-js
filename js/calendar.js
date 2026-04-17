@@ -69,7 +69,7 @@ export class Calendar {
 		try {
 			const response = await fetch(`storage/${settings.token}.json`, {
 				method: 'GET',
-				cache: 'no-cache'
+				cache: 'no-store'
 			});
 
 			if (!response.ok) {
