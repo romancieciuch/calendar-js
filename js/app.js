@@ -1,8 +1,8 @@
 const ver = 10;
 
-import { load_view }  from './routing.js?v=9';
-import { misc }       from './misc.js?v=9';
-import { Calendar }   from './calendar.js?v=9';
+import { load_view }  from './routing.js?v=10';
+import { misc }       from './misc.js?v=10';
+import { Calendar }   from './calendar.js?v=10';
 
 window.calendar = new Calendar();
 
