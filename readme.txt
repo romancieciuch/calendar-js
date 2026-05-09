@@ -8,6 +8,7 @@ Wymagania systemowe:
 - przeglądarka stron www
 - włączony Java Script
 - przeglądarka obsługuje Local Storage
+- aplikacja może działać też jako PWA
 
 Katalogi:
 - css - style css
