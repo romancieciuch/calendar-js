@@ -35,6 +35,6 @@ export function load_view (ver = 1) {
 		app.appendChild(script);
 	})
 	.catch(() => {
-		app.innerHTML = "404";
+		window.location.href = '#404';
 	});
 }
