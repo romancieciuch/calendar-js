@@ -30,7 +30,7 @@ window.view = (params) => {
 					style="top: calc(((${el.start_hour} + ${el.start_minutes / 60}) - 6) * var(--hour-height));
 					left: calc((${n}) * var(--event-width));
 					width: calc(var(--event-width));
-					height: calc(${el.duration_hours} * var(--hour-height));
+					min-height: calc(${el.duration_hours} * var(--hour-height));
 					background-color: ${el.color}">
 					${el.start} &bull; ${el.title}
 				</a>
